@@ -7,7 +7,9 @@
 <li><strong>项目中用不用多数据源是一回事，你自己会不会又是另一回事。</strong></li>
 <li><strong>SpringBoot2.0.8版本整合MybatisPlus实现多数据源很简单，但是事务总是不生效？</strong></li>
 <li><strong>MybatisPlus提供了多数据源插件(<a href="https://mp.baomidou.com/guide/dynamic-datasource.html" target="_blank" rel="noopener" title="With a Title">链接</a>)，我可不可以不用?</strong></li>
-<li><strong>其实多数据源挺好配的，就是事务一直不生效。今天终于解决了。</strong></li>
+<li><strong>其实多数据源挺好配的，就是事务一直不生效。今天终于解决了。</strong><a id="more"></a>
+
+</li>
 </ol>
 <h5 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构:"></a>项目结构:</h5><img src="/.com//05/14/SpringBoot2-X-MybatisPlus/image-20200513164317561.png" class title="image-20200513164317561.png">
 
@@ -42,6 +44,9 @@
 <li>事务不生效原因是Spring的默认事务管理器没有接管我们自定义的数据源.解决方法是配置一个事务管理器将我们自定义的数据源塞给它</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>Java后端</category>
+      </categories>
       <tags>
         <tag>SpringBoot</tag>
       </tags>
