@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-15T18:12:30.288Z</updated>
+  <updated>2020-05-19T01:54:10.802Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SpringBoot深度理解之自动配置</title>
+    <link href="http://yoursite.com/2020/05/18/SpringBoot%E4%B9%8B%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2020/05/18/SpringBoot%E4%B9%8B%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/</id>
+    <published>2020-05-18T14:16:34.000Z</published>
+    <updated>2020-05-19T01:54:10.802Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java后端" scheme="http://yoursite.com/categories/Java%E5%90%8E%E7%AB%AF/"/>
+    
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+  </entry>
   
   <entry>
     <title>这就算第一个Listener的夜晚吧</title>
