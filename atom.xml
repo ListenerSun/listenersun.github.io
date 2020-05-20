@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-19T03:26:28.505Z</updated>
+  <updated>2020-05-20T14:55:35.505Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【挑战 Spring】—– Spring IOC 源码调试一</title>
+    <link href="http://yoursite.com/2020/05/20/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%20IOC%20%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%80/"/>
+    <id>http://yoursite.com/2020/05/20/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%20IOC%20%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%80/</id>
+    <published>2020-05-20T14:16:34.000Z</published>
+    <updated>2020-05-20T14:55:35.505Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;使用Spring已经很久了，一直想对源码去窥探窥探，拖了又拖、等了又等。自从在&lt;a
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Spring源码" scheme="http://yoursite.com/categories/Spring%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="挑战Spring" scheme="http://yoursite.com/tags/%E6%8C%91%E6%88%98Spring/"/>
+    
+      <category term="java后端" scheme="http://yoursite.com/tags/java%E5%90%8E%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringBoot深度理解之自动配置</title>
