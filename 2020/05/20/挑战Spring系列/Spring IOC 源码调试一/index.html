@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.4k</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -133,6 +133,9 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> ResourcePatternResolver <span class="title">getResourcePatternResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> <span class="keyword">new</span> PathMatchingResourcePatternResolver(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h5 id="2-简单说一下PathMatchingResourcePatternResolver"><a href="#2-简单说一下PathMatchingResourcePatternResolver" class="headerlink" title="2.简单说一下PathMatchingResourcePatternResolver"></a>2.简单说一下<code>PathMatchingResourcePatternResolver</code></h5><p><code>PathMatchingResourcePatternResolver</code>的顶级接口是<code>ResourceLoader</code>，<strong>简单说就是来加载我们的资源文件的</strong>(比如:<code>classpath*:META-INF/spring-ioc.xml</code>)</p>
+<h5 id="3-setParent-parent"><a href="#3-setParent-parent" class="headerlink" title="3. setParent(parent)"></a>3. setParent(parent)</h5><p><code>this.parent</code>是<code>ApplicationContext parent</code>类型的属性，此时从<code>ClassPathXmlApplicationContext</code>类层层调用传上来的parent参数为null。里面还有一段判断逻辑意思就是，如果parent参数不为null，还会对容器运行环境上下文对象做一个合并处理。意思就是把环境配置信息进行一个合并。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParent</span><span class="params">(@Nullable ApplicationContext parent)</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">this</span>.parent = parent;   </span><br><span class="line">    <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;      </span><br><span class="line">        Environment parentEnvironment = parent.getEnvironment();      </span><br><span class="line">        <span class="keyword">if</span> (parentEnvironment <span class="keyword">instanceof</span> ConfigurableEnvironment) &#123;                				getEnvironment().merge((ConfigurableEnvironment) parentEnvironment);      </span><br><span class="line">                                                                  &#125;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>到此之后代码又会回到<code>AbstractApplicationContext</code> 类的构造方法中</p>
 <h4 id="4-回到ClassPathXmlApplicationContext构造方法"><a href="#4-回到ClassPathXmlApplicationContext构造方法" class="headerlink" title="4.回到ClassPathXmlApplicationContext构造方法"></a>4.回到<code>ClassPathXmlApplicationContext</code>构造方法</h4><p><strong><code>super(parent)</code></strong>方法完成后，此时父类对象实例化完成，但是<code>ClassPathXmlApplicationContext</code>对象还未实例化完成。下面代码中可以看到后面还有 <code>setConfigLocations(configLocations)</code>和<code>refresh()</code>两个方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ClassPathXmlApplicationContext</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      String[] configLocations, <span class="keyword">boolean</span> refresh, @Nullable ApplicationContext parent)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">   <span class="keyword">super</span>(parent);</span><br><span class="line">    <span class="comment">// 调用父类 AbstractRefreshableConfigApplicationContext 的 setConfigLocations()方法</span></span><br><span class="line">   setConfigLocations(configLocations);</span><br><span class="line">   <span class="keyword">if</span> (refresh) &#123;</span><br><span class="line">      <span class="comment">// 调用父类 AbstractApplicationContext#refresh() 的方法</span></span><br><span class="line">      refresh();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -142,7 +145,7 @@
 <p>在代码中可以看到有这样一段逻辑<code>this.configLocations[i] = resolvePath(locations[i]).trim()</code>意思就是把我们配置资源路径维护进一个数组中。下面我们说一下这个<code>resolvePath(String path)</code>方法。</p>
 <h5 id="2-执行AbstractRefreshableConfigApplicationContext的resolvePath-String-path"><a href="#2-执行AbstractRefreshableConfigApplicationContext的resolvePath-String-path" class="headerlink" title="2.执行AbstractRefreshableConfigApplicationContext的resolvePath(String path)"></a>2.执行<code>AbstractRefreshableConfigApplicationContext</code>的<code>resolvePath(String path)</code></h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">resolvePath</span><span class="params">(String path)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> getEnvironment().resolveRequiredPlaceholders(path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>在<code>resolvePath(String path)</code>方法中有两个操作，一个是<code>getEnvironment()</code>，一个是<code>resolveRequiredPlaceholders(path</code></p>
+<p>在<code>resolvePath(String path)</code>方法中有两个操作，一个是<code>getEnvironment()</code>，一个是<code>resolveRequiredPlaceholders(path)</code>方法</p>
 <ul>
 <li><p><code>getEnvironment()</code>方法</p>
 <p><img src="/2020/05/20/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%20IOC%20%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%80/getEnvironment().png" alt="getEnvironment()"></p>
@@ -257,6 +260,15 @@
   
   
   <nav class="article-nav">
+    
+      <a href="/2020/05/21/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%20IOC%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%BA%8C/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            【挑战 Spring】—– Spring IOC 源码调试二
+          
+        </div>
+      </a>
     
     
       <a href="/2020/05/18/SpringBoot%E4%B9%8B%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE/" class="article-nav-link">
