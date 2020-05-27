@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-27T04:59:30.881Z</updated>
+  <updated>2020-05-27T05:25:07.110Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,11 +21,11 @@
     <link href="http://yoursite.com/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <id>http://yoursite.com/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
     <published>2020-05-26T15:55:34.000Z</published>
-    <updated>2020-05-27T04:59:30.881Z</updated>
+    <updated>2020-05-27T05:25:07.110Z</updated>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;Redis使用也挺久了，也没用到过高级用法，就是简单的做个缓存。以前也没系统的学过。前几天看了个Redis视频课程，就做了下笔记，大部分都是基础知识，没有涉及到高阶，但是也算是全面的梳理了一遍。&lt;/p&gt;
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;Redis使用也挺久了，也没用到过高级用法，就是简单的做个缓存。以前也没系统的学过。前几天看了个Redis视频课程，就做了下笔记，大部分都是基础知识，没有涉及到高阶，但是也算是全面的梳理了一遍。&lt;strong&gt;纯手打! 实属不易! 点个赞吧！&lt;/strong&gt;&lt;/p&gt;
     
     </summary>
     
