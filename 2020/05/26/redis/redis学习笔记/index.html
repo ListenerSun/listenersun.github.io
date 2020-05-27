@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.8k</span>
+            <span class="post-count">5.6k</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">13 分钟</span>
+            <span class="post-count">21 分钟</span>
         </span>
     </span>
 </div>
@@ -110,12 +110,230 @@
       
 
       
-      <h3 id="set数据结构"><a href="#set数据结构" class="headerlink" title="set数据结构:"></a><strong>set数据结构:</strong></h3><h4 id="1-添加一个和多个元素-sadd-key1-“sqt”、-sadd-key1-“wby”-“cl”"><a href="#1-添加一个和多个元素-sadd-key1-“sqt”、-sadd-key1-“wby”-“cl”" class="headerlink" title="1.添加一个和多个元素: sadd  key1 “sqt”、 sadd key1 “wby” “cl”"></a>1.添加一个和多个元素: sadd  key1 “sqt”、 sadd key1 “wby” “cl”</h4><h4 id="2-求交集-sinter-key1-kye2"><a href="#2-求交集-sinter-key1-kye2" class="headerlink" title="2.求交集: sinter key1 kye2"></a>2.求交集: sinter key1 kye2</h4><a id="more"></a>
+      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Redis使用也挺久了，也没用到过高级用法，就是简单的做个缓存。以前也没系统的学过。前几天看了个Redis视频课程，就做了下笔记，大部分都是基础知识，没有涉及到高阶，但是也算是全面的梳理了一遍。</p>
+<a id="more"></a>
 
-<h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合:"></a><strong>有序集合:</strong></h3><h4 id="特点"><a href="#特点" class="headerlink" title="特点:"></a><strong>特点:</strong></h4><ol>
-<li>组成: key   score   value</li>
+<h3 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h3><h4 id="常用命令-点击参考"><a href="#常用命令-点击参考" class="headerlink" title="常用命令(点击参考)"></a>常用命令(<a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener">点击参考</a>)</h4><ol>
+<li><p>set命令设置 key value </p>
+<ul>
+<li><p><code>EX</code> <em>seconds</em> – 设置键key的过期时间，单位时秒</p>
+</li>
+<li><p><code>PX</code> <em>milliseconds</em> – 设置键key的过期时间，单位时毫秒</p>
+</li>
+<li><p><code>NX</code> – 只有键key不存在的时候才会设置key的值</p>
+</li>
+<li><p><code>XX</code> – 只有键key存在的时候才会设置key的值</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1：6379&gt; set key "Hello"</span><br><span class="line">OK</span><br><span class="line">127.0.0.1：6379&gt; set key "hello" ex 1000</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>get key</code>：获取某个key的value</p>
+</li>
+<li><p><code>APPEND key value</code>：追加一个值到<code>key</code>上，如果<code>key</code>不存在则创建一个<code>key</code></p>
+</li>
+<li><p><code>MSET key1 value1 key2 value2]</code>：设置多个 key value</p>
+</li>
+<li><p><code>MGET key1 key2</code>：获取多个值，如果key不存在，返回<code>nil</code></p>
+</li>
+<li><p><code>INCR key</code>(只操作整数)：执行原子加一操作，如果key不存在，则key从0开始加1.</p>
+</li>
+<li><p><code>INCRBY key increment</code>(只操作整数)`：执行<strong>原子</strong>增加一个值，如果key不存在，key被设置为0，如果数据类型错误返回错误。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1：6379&gt; set num 10</span><br><span class="line">OK</span><br><span class="line">127.0.0.1：6379&gt; INCRBY num 2</span><br><span class="line">(integer) 12</span><br><span class="line">127.0.0.1：6379&gt; INCRBY num "sss"</span><br><span class="line">(error) ERR value is not an integer or out of range</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>DECR key(只操作整数)</code>：整数<code>原子</code>减一，如果key不存在，则key从0开始减一，如果数据类型错误，返回错误。</p>
+</li>
+<li><p><code>DECRBY key decrement</code>(只操作整数)：<strong>原子性</strong>减指定的数，如果key不存在，则key被置为0，然后相减</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1：6379&gt; set num 10</span><br><span class="line">OK</span><br><span class="line">127.0.0.1：6379&gt; DECRBY num 5</span><br><span class="line">(integer) 5</span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
-<h4 id="集合-VS-有序集合"><a href="#集合-VS-有序集合" class="headerlink" title="集合 VS 有序集合"></a><strong>集合 VS 有序集合</strong></h4><table>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li>缓存</li>
+</ol>
+<h3 id="Hashes（哈希）"><a href="#Hashes（哈希）" class="headerlink" title="Hashes（哈希）"></a>Hashes（哈希）</h3><h4 id="常用命令-点击参考-1"><a href="#常用命令-点击参考-1" class="headerlink" title="常用命令(点击参考)"></a>常用命令(<a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener">点击参考</a>)</h4><ol>
+<li><p><code>HSET key field value</code>：设置hash里面一个字段的值</p>
+</li>
+<li><p><code>HGET key field</code>：获取某个字段的值</p>
+</li>
+<li><p><code>HDEL key field</code>：删除<strong>1个或多个</strong>字段的值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1：6379&gt; HSET sqt name 'listener'</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1：6379&gt; HGET sqt name</span><br><span class="line">"listener"</span><br><span class="line">127.0.0.1：6379&gt; HDEL sqt name</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1：6379&gt; HGET sqt name</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>HKEYS key</code>：获取 key 所有字段的名字</p>
+</li>
+<li><p><code>HVALS key</code>：返回key所有字段的value值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1：6379&gt; hset sqt name listener age 20 address '西安'</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1：6379&gt; HKEYS sqt</span><br><span class="line">1) "name"</span><br><span class="line">2) "age"</span><br><span class="line">3) "address"</span><br><span class="line">127.0.0.1：6379&gt; HVALS sqt</span><br><span class="line">1) "listener"</span><br><span class="line">2) "20"</span><br><span class="line">3) "\xe8\xa5\xbf\xe5\xae\x89"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>HGETALL key</code>：返回 key 指定的哈希集中所有的字段和值。返回值中，每个字段名的下一个是它的值，所以返回值的长度是哈希集大小的两倍</p>
+<h4 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li>个人用户首页访问量</li>
+</ol>
+</li>
+</ol>
+<h3 id="List（列表）"><a href="#List（列表）" class="headerlink" title="List（列表）"></a>List（列表）</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>Redis lists<strong>基于Linked Lists实现</strong>。这意味着即使在一个list中有数百万个元素，在头部或尾部添加一个元素的操作，其时间复杂度也是常数级别的</p>
+<h4 id="常用命令-点击参考-2"><a href="#常用命令-点击参考-2" class="headerlink" title="常用命令(点击参考)"></a>常用命令(<a href="http://www.redis.cn/commands/brpoplpush.html" target="_blank" rel="noopener">点击参考</a>)</h4><ol>
+<li><p><code>LSET key index value</code>：设置 index 位置的list元素的值为 value，当index超出范围返回一个error</p>
+</li>
+<li><p><code>LPUSH key value1 value2</code>：从队列左边向右边入队一个或多个元素</p>
+</li>
+<li><p><code>LPOP key</code>：移除并且返回 key 对应的 list 的第一个元素。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; LPUSH sqt name age address</span><br><span class="line">(integer) 3</span><br><span class="line">127.0.0.1:6379&gt; LPOP sqt</span><br><span class="line">"address"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>LLEN key</code>：返回存储在 key 里的list的长度。如果 key 不存在，会被看作是空list，并且返回长度为 0。 当存储在 key 里的值不是一个list的话，会返回error。</p>
+<h4 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li>粉丝列表、关注列表(利用队列的性质)</li>
+<li>实现消息队列</li>
+</ol>
+</li>
+</ol>
+<h3 id="Sets（集合）"><a href="#Sets（集合）" class="headerlink" title="Sets（集合）"></a><strong>Sets</strong>（集合）</h3><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p><strong>不重复且无序</strong>的字符串元素的集合</p>
+<h4 id="常用命令-点击参考-3"><a href="#常用命令-点击参考-3" class="headerlink" title="常用命令(点击参考)"></a>常用命令(<a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener">点击参考</a>)</h4><ol>
+<li><p><code>sadd key value1 value2</code>：添加一个和多个元素</p>
+</li>
+<li><p><code>sinter key1 key2</code>：求交集</p>
+</li>
+<li><p><code>SCARD key</code>：集合存储的key的基数 (集合元素的数量)</p>
+</li>
+<li><p><code>SREM key member1 member2</code>：移除key集合指定的元素. 如果指定元素不存在则忽略，如果key集合不存在返回0.</p>
+</li>
+<li><p><code>SPOP key [count]</code>：从存储在<code>key</code>的集合中<strong>移除并返回</strong>一个或多个随机元素</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd set 1 2 3 4 5 6</span><br><span class="line">(integer) 6</span><br><span class="line">127.0.0.1:6379&gt; SPOP set</span><br><span class="line">"5"</span><br><span class="line">127.0.0.1:6379&gt; SPOP set</span><br><span class="line">"6"</span><br><span class="line">127.0.0.1:6379&gt; SPOP set</span><br><span class="line">"3"</span><br><span class="line">127.0.0.1:6379&gt; SPOP set 2</span><br><span class="line">1) "4"</span><br><span class="line">2) "1"</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>SRANDMEMBER key [count]</code>：随机返回key集合中的一个元素，<strong>不删除</strong></p>
+</li>
+</ol>
+<h4 id="应用场景-3"><a href="#应用场景-3" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li>共同好友—-&gt;<code>sinter key1 key2</code></li>
+<li>抽奖系统—–&gt;<code>SRANDMEMBER key [count]</code>或<code>SPOP key [count]</code></li>
+</ul>
+<h3 id="Sorted-Sets-有序集合"><a href="#Sorted-Sets-有序集合" class="headerlink" title="Sorted Sets(有序集合)"></a><strong>Sorted Sets(有序集合)</strong></h3><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a><strong>简介</strong></h4><p>类似Sets。但是<strong>元素不重复且有序</strong>。但是每个字符串元素都关联到一个叫<em>score</em>浮动数值（floating number value）。里面的元素总是通过score进行着排序，所以不同的是，它是可以检索的一系列元素。</p>
+<h4 id="基本命令-点击参考"><a href="#基本命令-点击参考" class="headerlink" title="基本命令(点击参考)"></a><strong>基本命令(<a href="http://www.redis.cn/commands.html" target="_blank" rel="noopener">点击参考</a>)</strong></h4><ol>
+<li><p><code>ZADD key score element</code>：添加一个或者多个元素， 如果元素(element)已存在，则更新并重新排序。如果key不存在，则创建新集合。复杂度 O(logN)    </p>
+<ul>
+<li><strong>XX</strong>: 仅仅更新存在的成员，不添加新成员。</li>
+<li><strong>NX</strong>: 不更新存在的成员。只添加新成员。</li>
+<li><strong>CH</strong>: 修改返回值为发生变化的成员总数，原始是返回新添加成员的总数 (CH 是 <em>changed</em> 的意思)。更改的元素是<strong>新添加的成员</strong>，已经存在的成员<strong>更新分数</strong>。 所以在命令中指定的成员有相同的分数将不被计算在内。注：在通常情况下，<code>ZADD</code>返回值只计算新添加成员的数量。</li>
+<li><strong>INCR</strong>: 当<code>ZADD</code>指定这个选项时，成员的操作就等同<a href="http://www.redis.cn/commands/zincrby.html" target="_blank" rel="noopener">ZINCRBY</a>命令，对成员的分数进行递增操作。</li>
+</ul>
+</li>
+<li><p><code>ZCARD key</code>：返回 key 集合元素的数量</p>
+</li>
+<li><p><code>ZREM key member [member ...]</code>：删除一个或多个元素，当key存在，但是其不是有序集合类型，就返回一个错误。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd user 100 listener 120 sqt</span><br><span class="line">(integer) 2</span><br><span class="line">127.0.0.1:6379&gt; zrem user listener</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; zcard user</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]</code>：有序集合中<strong>指定分数区间内</strong>的成员，分数由高到低排序</p>
+<ul>
+<li><p>完整语法示例：<code>ZREVRANGEBYSCORE key max min WITHSCORES LIMIT offset count</code></p>
+</li>
+<li><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ZREVRANGEBYSCORE</td>
+<td>是</td>
+<td>指令</td>
+</tr>
+<tr>
+<td>key</td>
+<td>是</td>
+<td>有序集合键名称</td>
+</tr>
+<tr>
+<td>max</td>
+<td>是</td>
+<td>最大分数值,可使用”+inf”代替</td>
+</tr>
+<tr>
+<td>min</td>
+<td>是</td>
+<td>最小分数值,可使用”-inf”代替</td>
+</tr>
+<tr>
+<td>WITHSCORES</td>
+<td>否</td>
+<td>将成员分数一并返回</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>否</td>
+<td>返回结果是否分页,指令中包含LIMIT后offset、count必须输入</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>否</td>
+<td>返回结果起始位置</td>
+</tr>
+<tr>
+<td>count</td>
+<td>否</td>
+<td>返回结果数量</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd exam_score 100 sqt 110 wby 70 cl 10 zhangsan 33 lisi 66 wangwu 77 chenliu 83 listener</span><br><span class="line">(integer) 8</span><br><span class="line">127.0.0.1:6379&gt; ZREVRANGEBYSCORE exam_score 100 5 WITHSCORES</span><br><span class="line"> 1) "sqt"</span><br><span class="line"> 2) "100"</span><br><span class="line"> 3) "listener"</span><br><span class="line"> 4) "83"</span><br><span class="line"> 5) "chenliu"</span><br><span class="line"> 6) "77"</span><br><span class="line"> 7) "cl"</span><br><span class="line"> 8) "70"</span><br><span class="line"> 9) "wangwu"</span><br><span class="line">10) "66"</span><br><span class="line">11) "lisi"</span><br><span class="line">12) "33"</span><br><span class="line">13) "zhangsan"</span><br><span class="line">14) "10"</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p><code>ZREVRANGEBYLEX key max min [LIMIT offset count]</code>：返回指定成员区间内的成员，按成员字典倒序排序, 分数必须相同</p>
+<ul>
+<li><p>完整语法：<code>ZREVRANGEBYLEX key max min [LIMIT offset count]</code></p>
+</li>
+<li><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ZREVRANGEBYLEX</td>
+<td>是</td>
+<td>指令</td>
+</tr>
+<tr>
+<td>key</td>
+<td>是</td>
+<td>有序集合键名称</td>
+</tr>
+<tr>
+<td>max</td>
+<td>是</td>
+<td>字典中排序位置较大的成员,必须以”[“开头,或者以”(“开头,可使用”+”代替</td>
+</tr>
+<tr>
+<td>min</td>
+<td>是</td>
+<td>字典中排序位置较小的成员,必须以”[“开头,或者以”(“开头,可使用”-“代替</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>否</td>
+<td>返回结果是否分页,指令中包含LIMIT后offset、count必须输入</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>否</td>
+<td>返回结果起始位置</td>
+</tr>
+<tr>
+<td>count</td>
+<td>否</td>
+<td>返回结果数量</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="应用场景-4"><a href="#应用场景-4" class="headerlink" title="应用场景"></a>应用场景</h4><ol>
+<li>排行榜(根据点赞数、评论数)</li>
+<li>热点数据</li>
+</ol>
+<h3 id="集合-VS-有序集合"><a href="#集合-VS-有序集合" class="headerlink" title="集合 VS 有序集合"></a><strong>集合 VS 有序集合</strong></h3><table>
 <thead>
 <tr>
 <th align="center"><strong>集合</strong></th>
@@ -135,7 +353,7 @@
 <td align="center">element + score</td>
 </tr>
 </tbody></table>
-<h4 id="列表-VS-有序集合"><a href="#列表-VS-有序集合" class="headerlink" title="列表 VS 有序集合"></a><strong>列表 VS 有序集合</strong></h4><table>
+<h3 id="列表-VS-有序集合"><a href="#列表-VS-有序集合" class="headerlink" title="列表 VS 有序集合"></a><strong>列表 VS 有序集合</strong></h3><table>
 <thead>
 <tr>
 <th align="center"><strong>列表</strong></th>
@@ -155,12 +373,8 @@
 <td align="center">element + score</td>
 </tr>
 </tbody></table>
-<h4 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令:"></a><strong>基本命令:</strong></h4><h5 id="添加-zadd-key-score-element-可以是多对-，复杂度-o-logN"><a href="#添加-zadd-key-score-element-可以是多对-，复杂度-o-logN" class="headerlink" title="添加:  zadd key score element(可以是多对)，复杂度 o(logN)"></a>添加:  zadd key score element(可以是多对)，复杂度 o(logN)</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zadd user:1:ranking 255 tom</span><br></pre></td></tr></table></figure>
-
-<h5 id="删除-zrem-key-element-可以是多个-，复杂度O-1"><a href="#删除-zrem-key-element-可以是多个-，复杂度O-1" class="headerlink" title="删除 zrem key element(可以是多个)，复杂度O(1)"></a>删除 zrem key element(可以是多个)，复杂度O(1)</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrem user:1:ranking 255 tom</span><br></pre></td></tr></table></figure>
-
-<h5 id="获取分数-zscore-key-element"><a href="#获取分数-zscore-key-element" class="headerlink" title="获取分数: zscore key element"></a>获取分数: zscore key element</h5><h5 id="增加后减少元素分数-zincrby-key-分数-element"><a href="#增加后减少元素分数-zincrby-key-分数-element" class="headerlink" title="增加后减少元素分数: zincrby key 分数 element"></a>增加后减少元素分数: zincrby key 分数 element</h5><h5 id="返回元素个数-zcard-key"><a href="#返回元素个数-zcard-key" class="headerlink" title="返回元素个数: zcard key"></a>返回元素个数: zcard key</h5><h3 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a><strong>慢查询</strong></h3><p>客户端超时不一定是慢查询，但慢查询是客户端超时的一个因素</p>
-<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期:"></a><strong>生命周期:</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送命令-&gt;命令排队-&gt;命令执行-&gt;返回结果</span><br></pre></td></tr></table></figure>
+<h3 id="慢查询"><a href="#慢查询" class="headerlink" title="慢查询"></a><strong>慢查询</strong></h3><p>客户端超时不一定是慢查询，但慢查询是客户端超时的一个因素</p>
+<h4 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a><strong>生命周期：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发送命令-&gt;命令排队-&gt;命令执行-&gt;返回结果</span><br></pre></td></tr></table></figure>
 
 <p><strong>慢查询发生在 命令执行  阶段。</strong></p>
 <h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a><strong>配置</strong></h4><ol>
@@ -168,8 +382,8 @@
 <li>配置<strong><code>slowlog-max-len</code> **指定最多保存多少条慢查询记录</strong>.(默认10ms，建议1ms)**</li>
 </ol>
 <h3 id="pipeline（流水线）"><a href="#pipeline（流水线）" class="headerlink" title="pipeline（流水线）"></a><strong>pipeline（流水线）</strong></h3><p>一次网络时间，多条命令。节省网络传输时间</p>
-<h3 id="redis持久化的取舍和选择"><a href="#redis持久化的取舍和选择" class="headerlink" title="redis持久化的取舍和选择"></a><strong>redis持久化的取舍和选择</strong></h3><h4 id="持久化方式"><a href="#持久化方式" class="headerlink" title="持久化方式"></a><strong>持久化方式</strong></h4><h6 id="快照（RDB）"><a href="#快照（RDB）" class="headerlink" title="快照（RDB）"></a><strong>快照（RDB）</strong></h6><p>​        例如:Redis RDB、Mysql Dump </p>
-<h6 id="写日志（AOF）"><a href="#写日志（AOF）" class="headerlink" title="写日志（AOF）"></a><strong>写日志（AOF）</strong></h6><p>​        例如: Redis AOF、Mysql Binlog、Hbase Hlog</p>
+<h3 id="redis持久化的取舍和选择"><a href="#redis持久化的取舍和选择" class="headerlink" title="redis持久化的取舍和选择"></a><strong>redis持久化的取舍和选择</strong></h3><h4 id="持久化方式"><a href="#持久化方式" class="headerlink" title="持久化方式"></a><strong>持久化方式</strong></h4><h6 id="快照（RDB）"><a href="#快照（RDB）" class="headerlink" title="快照（RDB）"></a><strong>快照（RDB）</strong></h6><p>​        例如：Redis RDB、Mysql Dump </p>
+<h6 id="写日志（AOF）"><a href="#写日志（AOF）" class="headerlink" title="写日志（AOF）"></a><strong>写日志（AOF）</strong></h6><p>​        例如： Redis AOF、Mysql Binlog、Hbase Hlog</p>
 <h4 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a><strong>RDB</strong></h4><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a><strong>定义</strong></h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/RDB.png" alt="RDB.png"></p>
 <h5 id="触发机制的三种方式"><a href="#触发机制的三种方式" class="headerlink" title="触发机制的三种方式"></a><strong>触发机制的三种方式</strong></h5><h6 id="save-命令-同步"><a href="#save-命令-同步" class="headerlink" title="save 命令(同步)"></a><strong>save 命令(同步)</strong></h6><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/RDB-save.png" alt="RDB-save.png"></p>
 <ol>
@@ -226,7 +440,7 @@
 <li>save自动配置满足任一就会被执行</li>
 <li>有些触发机制不容忽视</li>
 </ol>
-<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a><strong>AOF</strong></h4><h5 id="AOF运行原理-创建-恢复"><a href="#AOF运行原理-创建-恢复" class="headerlink" title="AOF运行原理-创建/恢复"></a><strong>AOF运行原理-创建/恢复</strong></h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/D:%5Csqt%5Carticle%5Credis%5CAOF-%E5%88%9B%E5%BB%BA.png" alt="image-20200525183200381"></p>
+<h4 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a><strong>AOF</strong></h4><h5 id="AOF运行原理-创建-恢复"><a href="#AOF运行原理-创建-恢复" class="headerlink" title="AOF运行原理-创建/恢复"></a><strong>AOF运行原理-创建/恢复</strong></h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/D%EF%BC%9A%5Csqt%5Carticle%5Credis%5CAOF-%E5%88%9B%E5%BB%BA.png" alt="image-20200525183200381"></p>
 <h5 id="三种策略"><a href="#三种策略" class="headerlink" title="三种策略"></a><strong>三种策略</strong></h5><h6 id="always"><a href="#always" class="headerlink" title="always"></a><strong>always</strong></h6><p>每个命令都会进行持久化，数据不会丢失</p>
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AOF-always.png" alt="AOF-always.png"></p>
 <h6 id="everysec"><a href="#everysec" class="headerlink" title="everysec"></a><strong>everysec</strong></h6><p>Redis的默认配置，每一秒执行一次持久化，最多丢失一秒的数据。    <img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AOF-everysec.png" alt="AOF-everysec.png"></p>
@@ -287,11 +501,11 @@
 </thead>
 <tbody><tr>
 <td align="center">aof_current_size</td>
-<td align="center">AOF当前尺寸(单位:字节)</td>
+<td align="center">AOF当前尺寸(单位：字节)</td>
 </tr>
 <tr>
 <td align="center">aof_base_size</td>
-<td align="center">AOF上次启动和重写的尺寸(单位:字节)</td>
+<td align="center">AOF上次启动和重写的尺寸(单位：字节)</td>
 </tr>
 </tbody></table>
 </li>
@@ -358,21 +572,21 @@
 </ol>
 <h4 id="运维常见问题"><a href="#运维常见问题" class="headerlink" title="运维常见问题"></a><strong>运维常见问题</strong></h4><h5 id="fork操作"><a href="#fork操作" class="headerlink" title="fork操作"></a><strong>fork操作</strong></h5><ol>
 <li>同步操作</li>
-<li>于内存量息息相关:内存越大，耗时越长(与机器类型有关)</li>
+<li>于内存量息息相关：内存越大，耗时越长(与机器类型有关)</li>
 <li>info：lastest_fork_usec（查看fork执行的时间信息）</li>
 </ol>
 <h6 id="改善fork"><a href="#改善fork" class="headerlink" title="改善fork"></a><strong>改善fork</strong></h6><ol>
 <li>优先使用 物理机或者高效支持fork操作的虚拟化技术</li>
-<li>控制Redis实例最大可用内存:maxmemory</li>
-<li>合理配置Linux内存分配策略: <code>vm.overcommit_ory=1</code></li>
-<li>降低fork频率:例如放款AOF重写自动触发时机，不必要的全量赋值</li>
+<li>控制Redis实例最大可用内存：maxmemory</li>
+<li>合理配置Linux内存分配策略： <code>vm.overcommit_ory=1</code></li>
+<li>降低fork频率：例如放款AOF重写自动触发时机，不必要的全量赋值</li>
 </ol>
 <h5 id="子进程的开销和优化"><a href="#子进程的开销和优化" class="headerlink" title="子进程的开销和优化"></a><strong>子进程的开销和优化</strong></h5><h6 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a><strong>CPU</strong></h6><ul>
-<li>开销: RDB和AOF文件生成，属于CPU密集型</li>
+<li>开销： RDB和AOF文件生成，属于CPU密集型</li>
 <li>优化：不做CPU绑定，不和CPU密集型的服务一块部署</li>
 </ul>
 <h6 id="内存"><a href="#内存" class="headerlink" title="内存"></a><strong>内存</strong></h6><ul>
-<li>开销: fork内存开销， copy-on-write</li>
+<li>开销： fork内存开销， copy-on-write</li>
 <li>优化：echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled（<strong>禁用透明大页功能</strong>）</li>
 </ul>
 <h5 id="AOF追加阻塞"><a href="#AOF追加阻塞" class="headerlink" title="AOF追加阻塞"></a><strong>AOF追加阻塞</strong></h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AOF-%E8%BF%BD%E5%8A%A0%E9%98%BB%E5%A1%9E.png" alt="AOF-追加阻塞.png"></p>
@@ -381,13 +595,13 @@
 <p>出现以下日志有可能出现AOF阻塞</p>
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AOF%E9%98%BB%E5%A1%9E%E5%AE%9A%E4%BD%8D-redis%E6%97%A5%E5%BF%97.png" alt="AOF阻塞定位-redis日志.png"></p>
 </li>
-<li><p>命令:<code>info persistence</code></p>
-<p><code>aof_delayed_fsync:100</code> :表示累计阻塞的次数</p>
+<li><p>命令：<code>info persistence</code></p>
+<p><code>aof_delayed_fsync：100</code> ：表示累计阻塞的次数</p>
 </li>
 <li><p><code>top命令看硬盘情况</code></p>
 </li>
 </ol>
-<h3 id="Redis复制的原理与优化"><a href="#Redis复制的原理与优化" class="headerlink" title="Redis复制的原理与优化"></a><strong>Redis复制的原理与优化</strong></h3><h4 id="主从复制两种实现方式"><a href="#主从复制两种实现方式" class="headerlink" title="主从复制两种实现方式"></a><strong>主从复制两种实现方式</strong></h4><h5 id="命令实现"><a href="#命令实现" class="headerlink" title="命令实现:"></a>命令实现:</h5><h6 id="开启-slaveof-ip-port"><a href="#开启-slaveof-ip-port" class="headerlink" title="开启 slaveof ip port"></a><strong>开启 <code>slaveof ip port</code></strong></h6><p>​                <strong>执行开启命令后，会把当前redis服务中的数据清楚，然后去复制主节点中的数据</strong></p>
+<h3 id="Redis复制的原理与优化"><a href="#Redis复制的原理与优化" class="headerlink" title="Redis复制的原理与优化"></a><strong>Redis复制的原理与优化</strong></h3><h4 id="主从复制两种实现方式"><a href="#主从复制两种实现方式" class="headerlink" title="主从复制两种实现方式"></a><strong>主从复制两种实现方式</strong></h4><h5 id="命令实现："><a href="#命令实现：" class="headerlink" title="命令实现："></a>命令实现：</h5><h6 id="开启-slaveof-ip-port"><a href="#开启-slaveof-ip-port" class="headerlink" title="开启 slaveof ip port"></a><strong>开启 <code>slaveof ip port</code></strong></h6><p>​                <strong>执行开启命令后，会把当前redis服务中的数据清楚，然后去复制主节点中的数据</strong></p>
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6-%E5%91%BD%E4%BB%A4-%E5%BC%80%E5%90%AF.png" alt="主从复制-命令-开启.png"></p>
 <h6 id="取消主从复制-slaveof-no-one"><a href="#取消主从复制-slaveof-no-one" class="headerlink" title="取消主从复制 slaveof no one"></a><strong>取消主从复制 <code>slaveof no one</code></strong></h6><p>执行命令后，<strong>6380端口不会把之前同步6379服务的数据清除</strong>，<strong>只是不会在同步6379后面写入的数据</strong>。</p>
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6-%E5%91%BD%E4%BB%A4-%E5%8F%96%E6%B6%88.png" alt="主从复制-命令-取消.png"></p>
@@ -433,7 +647,7 @@
 <li>例如<code>maxmemory</code>不一致，导致数据丢失</li>
 <li>例如数据结构优化参数(例如hash-max-ziplist-entries)：内存不一致</li>
 </ol>
-<h5 id="规避全量复制"><a href="#规避全量复制" class="headerlink" title="规避全量复制"></a>规避全量复制</h5><h6 id="第一次全量复制"><a href="#第一次全量复制" class="headerlink" title="第一次全量复制:"></a>第一次全量复制:</h6><ul>
+<h5 id="规避全量复制"><a href="#规避全量复制" class="headerlink" title="规避全量复制"></a>规避全量复制</h5><h6 id="第一次全量复制："><a href="#第一次全量复制：" class="headerlink" title="第一次全量复制："></a>第一次全量复制：</h6><ul>
 <li>第一次不可避免</li>
 <li>在低峰的时候进行</li>
 </ul>
@@ -446,9 +660,9 @@
 <li>增大复制缓冲区配置<code>rel_backlog_size</code>，网络增强</li>
 </ul>
 <h5 id="复制风暴"><a href="#复制风暴" class="headerlink" title="复制风暴"></a>复制风暴</h5><h6 id="单主节点复制风暴"><a href="#单主节点复制风暴" class="headerlink" title="单主节点复制风暴"></a>单主节点复制风暴</h6><ul>
-<li><p><strong>问题</strong>:主节点重启，多从节点复制</p>
+<li><p><strong>问题</strong>：主节点重启，多从节点复制</p>
 </li>
-<li><p><strong>解决</strong>:更换复制拓扑（读写分离有问题）</p>
+<li><p><strong>解决</strong>：更换复制拓扑（读写分离有问题）</p>
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%8D%95%E8%8A%82%E7%82%B9%E5%A4%8D%E5%88%B6%E9%A3%8E%E6%9A%B4.png" alt="单节点复制风暴.png"></p>
 </li>
 </ul>
@@ -492,7 +706,7 @@
 <p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Redis-Sentinel-%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png" alt="Redis-Sentinel-第一个定时任务.png"></p>
 <h5 id="每2秒每个sentinel通过master节点的channel交换信息-pub-sub"><a href="#每2秒每个sentinel通过master节点的channel交换信息-pub-sub" class="headerlink" title="每2秒每个sentinel通过master节点的channel交换信息(pub/sub)"></a>每2秒每个sentinel通过master节点的channel交换信息(pub/sub)</h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Redis-Sentinel-%E7%AC%AC%E4%BA%8C%E4%B8%AA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png" alt="Redis-Sentinel-第二个定时任务.png"></p>
 <ol>
-<li>通过<code>__sentinel__</code>:hello交互频道信息</li>
+<li>通过<code>__sentinel__</code>：hello交互频道信息</li>
 <li>交互对节点的”看法”和自身的信息</li>
 </ol>
 <h5 id="（重要的一个）每1秒每个Sentinel对其他的Sentinel和Redis执行Ping（心跳检测，失败判断依据）"><a href="#（重要的一个）每1秒每个Sentinel对其他的Sentinel和Redis执行Ping（心跳检测，失败判断依据）" class="headerlink" title="（重要的一个）每1秒每个Sentinel对其他的Sentinel和Redis执行Ping（心跳检测，失败判断依据）"></a>（重要的一个）每1秒每个Sentinel对其他的Sentinel和Redis执行Ping（心跳检测，失败判断依据）</h5><p><img src="/2020/05/26/redis/redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Redis-Sentinel-%E7%AC%AC%E4%B8%89%E4%B8%AA%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png" alt="Redis-Sentinel-第三个定时任务.png"></p>
@@ -517,7 +731,7 @@
 <li>Redis Sentinel实现读写分离高可用可以依赖Sentinel节点的消息通知，获取Redis数据节点的状态变化</li>
 </ol>
 <h3 id="Redis-Cluster"><a href="#Redis-Cluster" class="headerlink" title="Redis Cluster"></a>Redis Cluster</h3><h4 id="虚拟槽分区"><a href="#虚拟槽分区" class="headerlink" title="虚拟槽分区"></a>虚拟槽分区</h4><ol>
-<li>预设虚拟槽:每个槽映射一个数据子集，一般比节点数大</li>
+<li>预设虚拟槽：每个槽映射一个数据子集，一般比节点数大</li>
 <li>良好的哈希函数：例如 CRC16</li>
 <li>服务端管理节点、槽、数据：例如Redis Cluster</li>
 </ol>
@@ -564,13 +778,13 @@
 <h6 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h6><ul>
 <li>避免多个业务使用一个大集群</li>
 <li><code>cluster-node-timeout</code>：带宽和故障转移速度的均衡</li>
-<li>尽量均匀分配到多机器上:保证高可用和带宽</li>
+<li>尽量均匀分配到多机器上：保证高可用和带宽</li>
 </ul>
 </li>
 </ul>
-<h5 id="Pub-Sub广播"><a href="#Pub-Sub广播" class="headerlink" title="Pub/Sub广播"></a>Pub/Sub广播</h5><h6 id="问题"><a href="#问题" class="headerlink" title="问题:"></a>问题:</h6><p>publish在集群每个节点广播:加重带宽</p>
+<h5 id="Pub-Sub广播"><a href="#Pub-Sub广播" class="headerlink" title="Pub/Sub广播"></a>Pub/Sub广播</h5><h6 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h6><p>publish在集群每个节点广播：加重带宽</p>
 <h6 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h6><p>单独”走”一套Redis Sentinel</p>
-<h5 id="集群倾斜"><a href="#集群倾斜" class="headerlink" title="集群倾斜"></a>集群倾斜</h5><h6 id="数据倾斜-内存不均匀"><a href="#数据倾斜-内存不均匀" class="headerlink" title="数据倾斜:内存不均匀"></a>数据倾斜:内存不均匀</h6><ul>
+<h5 id="集群倾斜"><a href="#集群倾斜" class="headerlink" title="集群倾斜"></a>集群倾斜</h5><h6 id="数据倾斜：内存不均匀"><a href="#数据倾斜：内存不均匀" class="headerlink" title="数据倾斜：内存不均匀"></a>数据倾斜：内存不均匀</h6><ul>
 <li>节点和槽分配不均匀</li>
 <li>不同槽对应键值数量差异较大</li>
 <li>包含bigkey(可在从节点执行<code>redis-cli --bigkeys</code>查找)</li>
@@ -586,7 +800,7 @@
 </ul>
 <h6 id="读写分离（较复杂，cluster模式下不建议使用）"><a href="#读写分离（较复杂，cluster模式下不建议使用）" class="headerlink" title="读写分离（较复杂，cluster模式下不建议使用）"></a>读写分离（较复杂，cluster模式下不建议使用）</h6><h5 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h5><h6 id="官方迁移工具-redis-tribrb-import"><a href="#官方迁移工具-redis-tribrb-import" class="headerlink" title="官方迁移工具(redis-tribrb import)"></a>官方迁移工具(redis-tribrb import)</h6><ul>
 <li>只能从单机迁移到集群</li>
-<li>不支持在线迁移:source需要停写</li>
+<li>不支持在线迁移：source需要停写</li>
 <li>不支持断点续传</li>
 <li>单线程迁移：影响速度</li>
 </ul>
