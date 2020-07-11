@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-11T18:18:32.214Z</updated>
+  <updated>2020-07-11T18:36:24.418Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【网络编程】—– 四层和七层网络模型，到底是个啥？</title>
+    <link href="http://yoursite.com/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/"/>
+    <id>http://yoursite.com/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</id>
+    <published>2020-07-11T18:16:34.000Z</published>
+    <updated>2020-07-11T18:36:24.418Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;四层和七层网络模型，到底是个啥？&quot;&gt;&lt;a href=&quot;#四层和七层网络模型，到底是个啥？&quot; class=&quot;headerlink&quot; title=&quot;四层和七层网络模型，到底是个啥？&quot;&gt;&lt;/a&gt;四层和七层网络模型，到底是个啥？&lt;/h3&gt;&lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;之前老是听说什么网络”四层模型”、“七层模型”，到底什么鬼，刚好又赶上最近的工作是跟通信相关，不懂点网络分层模型，感觉有点对不起内心中小小的倔强！正好看了下极客时间上透视HTTP协议上对网络分层的讲解，先记下来，深刻理解加长久记忆！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="网络编程" scheme="http://yoursite.com/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="网络编程" scheme="http://yoursite.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="网络协议" scheme="http://yoursite.com/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>【Listener的夜晚】—–-岁月不居，时节如流</title>

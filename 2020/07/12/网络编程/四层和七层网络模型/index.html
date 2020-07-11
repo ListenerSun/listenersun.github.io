@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    【Listener的夜晚】—–-岁月不居，时节如流 |  倾听者
+    【网络编程】—– 四层和七层网络模型，到底是个啥？ |  倾听者
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -44,7 +44,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-listener的夜晚/2020-06-12" class="article article-type-post" itemscope
+  <article id="post-网络编程/四层和七层网络模型" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -52,7 +52,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  【Listener的夜晚】—–-岁月不居，时节如流
+  【网络编程】—– 四层和七层网络模型，到底是个啥？
 </h1>
  
 
@@ -61,12 +61,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/06/12/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-06-12/" class="article-date">
-  <time datetime="2020-06-11T18:16:45.000Z" itemprop="datePublished">2020-06-12</time>
+      <a href="/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" class="article-date">
+  <time datetime="2020-07-11T18:16:34.000Z" itemprop="datePublished">2020-07-12</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Listener%E7%9A%84%E5%A4%9C%E6%99%9A/">Listener的夜晚</a>
+    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
   </div>
 
       
@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">155</span>
+            <span class="post-count">1.4k</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">4 分钟</span>
         </span>
     </span>
 </div>
@@ -110,9 +110,53 @@
       
 
       
-      <h3 id="【Listener的夜晚】—–-岁月不居，时节如流"><a href="#【Listener的夜晚】—–-岁月不居，时节如流" class="headerlink" title="【Listener的夜晚】—–  岁月不居，时节如流"></a>【Listener的夜晚】—–  岁月不居，时节如流</h3><p>又是一个夜深人静的夜晚，窗外依然能断断续续听见车的鸣笛声。越来越发现自己的脑子不够用，很简单的问题要理解一遍又一遍。就在这一瞬间我感觉到了时间飞逝，或许是有些多愁善感，也或许是多虑了！但是在当今的这个时代，仍要坚守初心，方得始终！</p>
-<p><img src="/2020/06/12/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-06-12/1.png" alt="listener"></p>
-<p>风华最后都变成了一指流沙，但切莫白白苍老了你的年华！每天早上依然要说一声：“世界，你好！”</p>
+      <h3 id="四层和七层网络模型，到底是个啥？"><a href="#四层和七层网络模型，到底是个啥？" class="headerlink" title="四层和七层网络模型，到底是个啥？"></a>四层和七层网络模型，到底是个啥？</h3><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前老是听说什么网络”四层模型”、“七层模型”，到底什么鬼，刚好又赶上最近的工作是跟通信相关，不懂点网络分层模型，感觉有点对不起内心中小小的倔强！正好看了下极客时间上透视HTTP协议上对网络分层的讲解，先记下来，深刻理解加长久记忆！</p>
+<a id="more"></a>
+
+<h4 id="TCP-IP-网络分层模型"><a href="#TCP-IP-网络分层模型" class="headerlink" title="TCP/IP 网络分层模型"></a>TCP/IP 网络分层模型</h4><p>还是先从 TCP/IP 协议开始讲起，一是因为它非常经典，二是因为它是目前事实上的网络通信标准，研究它的实用价值最大。<br>先看下TCP/IP 的协议层次图。</p>
+<p><img src="/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/TCP-IP%E5%88%86%E5%B1%82.png" alt="TCP-IP分层.png"></p>
+<p>TCP/IP 协议总共有四层，就像搭积木一样，每一层需要下层的支撑，同时又支撑着上层，<br>任何一层被抽掉都可能会导致整个协议栈坍塌。</p>
+<p>第一层叫“<strong>链接层</strong>”（link layer），负责在以太网、WiFi 这样的底层网络上发送原始数据包，工作在网卡这个层次，使用 MAC 地址来标记网络上的设备，所以有时候也叫 MAC层。</p>
+<p>第二层叫“<strong>网际层</strong>”或者“<strong>网络互连层</strong>”（internet layer），IP 协议就处在这一层。因为IP 协议定义了“IP 地址”的概念，所以就可以在“<strong>链接层</strong>”的基础上，用 IP 地址取代MAC 地址，把许许多多的局域网、广域网连接成一个虚拟的巨大网络，在这个网络里找设备时只要把 IP 地址再“翻译”成 MAC 地址就可以了。</p>
+<p>第三层叫“<strong>传输层</strong>”（transport layer），这个层次协议的职责是保证数据在 IP 地址标记的两点之间“<strong>可靠</strong>”地传输，是 TCP 协议工作的层次，另外还有它的一个“小伙伴”UDP。<strong>TCP 是一个有状态的协议</strong>，需要先与对方建立连接然后才能发送数据，而且保证数据不丢失不重复。而 <strong>UDP 则比较简单，它无状态</strong>，不用事先建立连接就可以任意发送数据，但不<br>保证数据一定会发到对方。两个协议的另一个重要区别在于数据的形式。TCP 的数据是连续的“字节流”，有先后顺序，而 UDP 则是分散的小数据包，是顺序发，乱序收。关于 TCP 和 UDP 可以展开讨论的话题还有很多，比如最经典的“三次握手”和“四次挥手”。</p>
+<p>第四层叫“<strong>应用层</strong>”（application layer），由于下面的三层把基础打得非常好，所以在这一层就“百花齐放”了，有各种面向具体应用的协议。例如 Telnet、SSH、FTP、SMTP 等等。</p>
+<p>MAC 层的传输单位是帧（frame），IP 层的传输单位是包（packet），TCP 层的传输单位是段（segment），HTTP 的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。</p>
+<h4 id="OSI-网络分层模型"><a href="#OSI-网络分层模型" class="headerlink" title="OSI 网络分层模型"></a>OSI 网络分层模型</h4><p>OSI，全称是“开放式系统互联通信参考模型”（Open System Interconnection Reference Model），历史背景就不说了。</p>
+<p>OSI 模型分成了七层，部分层次与 TCP/IP 很像，从下到上分别是：</p>
+<p><img src="/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/OSI-%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B.png" alt="OSI-七层模型.png"></p>
+<ol>
+<li>第一层：物理层，网络的物理形式，例如电缆、光纤、网卡、集线器等等；</li>
+<li>第二层：数据链路层，它基本相当于 TCP/IP 的链接层；</li>
+<li>第三层：网络层，相当于 TCP/IP 里的网际层；</li>
+<li>第四层：传输层，相当于 TCP/IP 里的传输层；</li>
+<li>第五层：会话层，维护网络中的连接状态，即保持会话和同步；</li>
+<li>第六层：表示层，把数据转换为合适、可理解的语法和语义；</li>
+<li>第七层：应用层，面向具体的应用传输数据。</li>
+</ol>
+<h4 id="两个分层模型的映射关系"><a href="#两个分层模型的映射关系" class="headerlink" title="两个分层模型的映射关系"></a>两个分层模型的映射关系</h4><p><img src="/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/OSI-TCP%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB.png" alt="OSI-TCP映射关系.png"></p>
+<ol>
+<li>第一层：物理层，TCP/IP 里无对应；</li>
+<li>第二层：数据链路层，对应 TCP/IP 的链接层；</li>
+<li>第三层：网络层，对应 TCP/IP 的网际层；</li>
+<li>第四层：传输层，对应 TCP/IP 的传输层；</li>
+<li>第五、六、七层：统一对应到 TCP/IP 的应用层。</li>
+</ol>
+<p>所谓的“<strong>四层负载均衡</strong>”就是指工作在传输层上，基于 TCP/IP 协议的特性，例如 IP 地址、端口号等实现对后端服务器的负载均衡。</p>
+<p>所谓的“<strong>七层负载均衡</strong>”就是指工作在应用层上，看到的是 HTTP 协议，解析 HTTP 报文里的 URI、主机名、资源类型等数据，再用适当的策略转发给后端服务器。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ol>
+<li><strong>TCP/IP 分为四层，核心是二层的 IP 和三层的 TCP，HTTP 在第四层；</strong></li>
+<li><strong>OSI 分为七层，基本对应 TCP/IP，TCP 在第四层，HTTP 在第七层；</strong></li>
+<li><strong>OSI 可以映射到 TCP/IP，但这期间一、五、六层消失了；</strong></li>
+<li><strong>日常交流的时候我们通常使用 OSI 模型，用四层、七层等术语；</strong></li>
+<li><strong>HTTP 利用 TCP/IP 协议栈逐层打包再拆包，实现了数据传输，但下面的细节并不可见。</strong></li>
+<li><strong>有一个辨别四层和七层比较好的（但不是绝对的）小窍门，“两个凡是”：凡是由操作系统</strong><br><strong>负责处理的就是四层或四层以下，否则，凡是需要由应用程序（也就是你自己写代码）负责</strong><br>  <strong>处理的就是七层</strong>。</li>
+</ol>
+<center><h3>欢迎扫码关注</h3></center>
+
+<blockquote>
+<p> 如果喜欢请关注我公众号【程序倾听者】，说出你的故事！我在这里倾听！</p>
+<p> <img src="/images/public-wechat.jpg" alt></p>
+</blockquote>
 
       
       <!-- reward -->
@@ -181,14 +225,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/06/12/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-06-12/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Listener%E7%9A%84%E5%A4%9C%E6%99%9A/" rel="tag">Listener的夜晚</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/" rel="tag">生活随笔</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" rel="tag">网络协议</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag">网络编程</a></li></ul>
 
 
     </footer>
@@ -199,19 +243,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/07/12/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            【网络编程】—– 四层和七层网络模型，到底是个啥？
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/05/28/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%20IOC%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95%E4%B8%89/" class="article-nav-link">
+      <a href="/2020/06/12/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-06-12/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">【挑战 Spring】—– Spring IOC 源码调试三之loadBeanDefinitions</div>
+        <div class="article-nav-title">【Listener的夜晚】—–-岁月不居，时节如流</div>
       </a>
     
   </nav>
