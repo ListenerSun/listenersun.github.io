@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    【Listener的夜晚】—–-白天也不一定会光亮 |  倾听者
+    【挑战 Spring】—– Spring之循环依赖一 |  倾听者
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -44,7 +44,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-listener的夜晚/2020-11-14" class="article article-type-post" itemscope
+  <article id="post-挑战Spring系列/Spring之循环依赖一" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -52,7 +52,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  【Listener的夜晚】—–-白天也不一定会光亮
+  【挑战 Spring】—– Spring之循环依赖一
 </h1>
  
 
@@ -61,12 +61,12 @@
 
     
     <div class="article-meta">
-      <a href="/2020/11/14/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-11-14/" class="article-date">
-  <time datetime="2020-11-14T08:30:45.000Z" itemprop="datePublished">2020-11-14</time>
+      <a href="/2020/12/15/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%E4%B9%8B%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%B8%80/" class="article-date">
+  <time datetime="2020-12-14T16:16:34.000Z" itemprop="datePublished">2020-12-15</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Listener%E7%9A%84%E5%A4%9C%E6%99%9A/">Listener的夜晚</a>
+    <a class="article-category-link" href="/categories/Spring%E7%82%B9%E6%BB%B4/">Spring点滴</a>
   </div>
 
       
@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">81</span>
+            <span class="post-count">796</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -110,9 +110,21 @@
       
 
       
-      <h3 id="【Listener的夜晚】—–-白天也不一定会光亮"><a href="#【Listener的夜晚】—–-白天也不一定会光亮" class="headerlink" title="【Listener的夜晚】—–  白天也不一定会光亮"></a>【Listener的夜晚】—–  白天也不一定会光亮</h3><p>额，原来很多的经历真的不仅仅是发生在你身上。但是确实没有真正的感同身受！今天感觉丧丧的，又要收拾收拾心情了！又得立flag！</p>
-<p><img src="/2020/11/14/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-11-14/1.jpg" alt="listener"></p>
-<p>如果白天也黑暗，那就让自己变成光！</p>
+      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>当你觉得自己很疲惫的时候，别人也很疲惫，你没有理由不逼自己一把！这次说一下Spring中的循环依赖，纯手打+代码调试！及时总结。不然又忘记了！</p>
+<a id="more"></a>
+
+<h3 id="1-什么是循环依赖？"><a href="#1-什么是循环依赖？" class="headerlink" title="** 1.什么是循环依赖？**"></a>** 1.什么是循环依赖？**</h3><p>循环依赖其实就是循环引用，也就是两个或则两个以上的bean互相持有对方，最终形成闭环。比如A依赖于B，B依赖于C，C又依赖于A。如下图：</p>
+<p><img src="/2020/12/15/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%E4%B9%8B%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%B8%80/1.png" alt="1.png"></p>
+<p><strong>注意，这里不是函数的循环调用，是对象的相互依赖关系。循环调用其实就是一个死循环，除非有终结条件。</strong></p>
+<h4 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构:"></a><strong>项目结构:</strong></h4><p><img src="/2020/12/15/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%E4%B9%8B%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%B8%80/2.png" alt="2.png"></p>
+<h4 id="Spring中循环依赖的场景"><a href="#Spring中循环依赖的场景" class="headerlink" title="Spring中循环依赖的场景"></a>Spring中循环依赖的场景</h4><p>（1）构造器的循环依赖。（<strong>Spring并未解决这种循环依赖的场景问题</strong>）<br>（2）field属性的循环依赖。</p>
+<h3 id="Spring中Bean实例化的流程"><a href="#Spring中Bean实例化的流程" class="headerlink" title="Spring中Bean实例化的流程"></a>Spring中Bean实例化的流程</h3><p>以AService 依赖 BService， BService 依赖AService 举例说明</p>
+<h4 id="1-将AService的class对象解析成BeanDefinition"><a href="#1-将AService的class对象解析成BeanDefinition" class="headerlink" title="1. 将AService的class对象解析成BeanDefinition"></a>1. 将AService的class对象解析成BeanDefinition</h4><h5 id="1-1将该对象标记为create状态，放入一个Map中"><a href="#1-1将该对象标记为create状态，放入一个Map中" class="headerlink" title="1.1将该对象标记为create状态，放入一个Map中"></a>1.1将该对象标记为create状态，放入一个Map中</h5><h4 id="2-利用反射生成-AService对象；"><a href="#2-利用反射生成-AService对象；" class="headerlink" title="2.  利用反射生成 AService对象；"></a>2.  利用反射生成 AService对象；</h4><h5 id="2-1-此时的对象是一个原始对象"><a href="#2-1-此时的对象是一个原始对象" class="headerlink" title="2.1 此时的对象是一个原始对象"></a>2.1 此时的对象是一个原始对象</h5><h5 id="2-2将原始对象放入三级缓存的Map中-稍后会在代码中解释"><a href="#2-2将原始对象放入三级缓存的Map中-稍后会在代码中解释" class="headerlink" title="2.2将原始对象放入三级缓存的Map中(稍后会在代码中解释)"></a>2.2将原始对象放入<strong>三级缓存的Map</strong>中(稍后会在代码中解释)</h5><h5 id="2-3-放入三级缓存Map中的key-AService-value-一个lambda表达式"><a href="#2-3-放入三级缓存Map中的key-AService-value-一个lambda表达式" class="headerlink" title="2.3 放入三级缓存Map中的key:AService, value:一个lambda表达式"></a>2.3 放入三级缓存Map中的key:AService, value:一个lambda表达式</h5><h4 id="3-填充AService对象的属性-也叫依赖注入"><a href="#3-填充AService对象的属性-也叫依赖注入" class="headerlink" title="3.填充AService对象的属性(也叫依赖注入)"></a>3.填充AService对象的属性(也叫<strong>依赖注入</strong>)</h4><h5 id="3-1属性中需要bService，会去单例池里面去找"><a href="#3-1属性中需要bService，会去单例池里面去找" class="headerlink" title="3.1属性中需要bService，会去单例池里面去找"></a>3.1属性中需要bService，会去单例池里面去找</h5><h5 id="3-2-单例池里面找不到bService，会去二级缓存Map中去找"><a href="#3-2-单例池里面找不到bService，会去二级缓存Map中去找" class="headerlink" title="3.2 单例池里面找不到bService，会去二级缓存Map中去找"></a>3.2 单例池里面找不到bService，会去二级缓存Map中去找</h5><h5 id="3-3-二级缓存中仍然找不到bService，则此时会去创建BService对象。-又开始执行第一步将class解析成BeanDefinition以及第2步……"><a href="#3-3-二级缓存中仍然找不到bService，则此时会去创建BService对象。-又开始执行第一步将class解析成BeanDefinition以及第2步……" class="headerlink" title="3.3 二级缓存中仍然找不到bService，则此时会去创建BService对象。(又开始执行第一步将class解析成BeanDefinition以及第2步……)"></a>3.3 二级缓存中仍然找不到bService，则此时会去创建BService对象。(又开始执行第一步将class解析成BeanDefinition以及第2步……)</h5><h5 id="3-4填充BService对象的属性——-gt-去单例池中寻找AService没找到——-gt-去二级缓存Map中去找——-gt-三级缓存中找—–-gt-找到了lambda表达式-原始对象-—–-gt-执行表达式生成AService—–-gt-执行aop（此时是提前aop）—–-gt-生成aService代理对象—–-gt-放入二级缓存map中-lt-aService-代理对象-gt-—–-gt-三级缓存map-remove-“aService”-删除2-3步中放入Aservice相关信息"><a href="#3-4填充BService对象的属性——-gt-去单例池中寻找AService没找到——-gt-去二级缓存Map中去找——-gt-三级缓存中找—–-gt-找到了lambda表达式-原始对象-—–-gt-执行表达式生成AService—–-gt-执行aop（此时是提前aop）—–-gt-生成aService代理对象—–-gt-放入二级缓存map中-lt-aService-代理对象-gt-—–-gt-三级缓存map-remove-“aService”-删除2-3步中放入Aservice相关信息" class="headerlink" title="3.4填充BService对象的属性——&gt;去单例池中寻找AService没找到——&gt;去二级缓存Map中去找——&gt;三级缓存中找—–&gt;找到了lambda表达式(原始对象)—–&gt;执行表达式生成AService—–&gt;执行aop（此时是提前aop）—–&gt;生成aService代理对象—–&gt;放入二级缓存map中&lt;aService,代理对象&gt;—–&gt;三级缓存map.remove(“aService”)删除2.3步中放入Aservice相关信息"></a>3.4填充BService对象的属性——&gt;去单例池中寻找AService没找到——&gt;去二级缓存Map中去找——&gt;三级缓存中找—–&gt;找到了lambda表达式(原始对象)—–&gt;执行表达式生成AService—–&gt;执行aop（此时是提前aop）—–&gt;生成aService代理对象—–&gt;放入二级缓存map中&lt;aService,代理对象&gt;—–&gt;三级缓存map.remove(“aService”)删除2.3步中放入Aservice相关信息</h5><h4 id="4-执行Aware相关代码-如果BService实现了Aware接口，会回调Aware相关方法"><a href="#4-执行Aware相关代码-如果BService实现了Aware接口，会回调Aware相关方法" class="headerlink" title="4. 执行Aware相关代码(如果BService实现了Aware接口，会回调Aware相关方法)"></a>4. 执行Aware相关代码(如果BService实现了Aware接口，会回调Aware相关方法)</h4><h4 id="5-初始化BService对象"><a href="#5-初始化BService对象" class="headerlink" title="5.初始化BService对象"></a>5.初始化BService对象</h4><h4 id="6-执行BService的AOP"><a href="#6-执行BService的AOP" class="headerlink" title="6.执行BService的AOP"></a>6.执行BService的AOP</h4><h4 id="7-将BService放入单例池"><a href="#7-将BService放入单例池" class="headerlink" title="7.将BService放入单例池"></a>7.将BService放入单例池</h4><h4 id="8-如果AService实现了Aware接口，则回调AService的方法-—–-gt-初始化AService对象—–-gt-执行AService的AOP—–-gt-将AService放入单例池"><a href="#8-如果AService实现了Aware接口，则回调AService的方法-—–-gt-初始化AService对象—–-gt-执行AService的AOP—–-gt-将AService放入单例池" class="headerlink" title="8.如果AService实现了Aware接口，则回调AService的方法.—–&gt;初始化AService对象—–&gt;执行AService的AOP—–&gt;将AService放入单例池"></a>8.如果AService实现了Aware接口，则回调AService的方法.—–&gt;初始化AService对象—–&gt;执行AService的AOP—–&gt;将AService放入单例池</h4><h3 id="三个缓存的作用"><a href="#三个缓存的作用" class="headerlink" title="三个缓存的作用"></a>三个缓存的作用</h3><h4 id="一级缓存：就是Spring的单例池Map"><a href="#一级缓存：就是Spring的单例池Map" class="headerlink" title="一级缓存：就是Spring的单例池Map"></a>一级缓存：就是Spring的单例池Map</h4><h4 id="二级缓存：-如果Bean对象提前AOP-，二级缓存存放的是对象的代理对象；如果对象没有提前AOP，二级缓存存放的是原始对象"><a href="#二级缓存：-如果Bean对象提前AOP-，二级缓存存放的是对象的代理对象；如果对象没有提前AOP，二级缓存存放的是原始对象" class="headerlink" title="二级缓存： 如果Bean对象提前AOP ，二级缓存存放的是对象的代理对象；如果对象没有提前AOP，二级缓存存放的是原始对象"></a>二级缓存： 如果Bean对象提前AOP ，二级缓存存放的是对象的代理对象；如果对象没有提前AOP，二级缓存存放的是原始对象</h4><h4 id="三级缓存：存放Bean的原始对象的Lambda表达式（如果Bean提前AOP需要依赖原始对象，该原始对象是在三级缓存中获取的）"><a href="#三级缓存：存放Bean的原始对象的Lambda表达式（如果Bean提前AOP需要依赖原始对象，该原始对象是在三级缓存中获取的）" class="headerlink" title="三级缓存：存放Bean的原始对象的Lambda表达式（如果Bean提前AOP需要依赖原始对象，该原始对象是在三级缓存中获取的）"></a>三级缓存：存放Bean的原始对象的Lambda表达式（如果Bean提前AOP需要依赖原始对象，该原始对象是在三级缓存中获取的）</h4><h4 id="注意：二级缓存存放了Bean的对象之后，三级缓存中需要把存放的lambda表达式删除掉"><a href="#注意：二级缓存存放了Bean的对象之后，三级缓存中需要把存放的lambda表达式删除掉" class="headerlink" title="注意：二级缓存存放了Bean的对象之后，三级缓存中需要把存放的lambda表达式删除掉"></a>注意：二级缓存存放了Bean的对象之后，三级缓存中需要把存放的lambda表达式删除掉</h4><h3 id="代码解读下一篇在解读，代码确实有点绕！"><a href="#代码解读下一篇在解读，代码确实有点绕！" class="headerlink" title="代码解读下一篇在解读，代码确实有点绕！"></a>代码解读下一篇在解读，代码确实有点绕！</h3><center><h3>欢迎扫码关注</h3></center>
+
+<blockquote>
+<p> 如果喜欢请关注我公众号【程序倾听者】，说出你的故事！我在这里倾听！</p>
+<p> <img src="/images/public-wechat.jpg" alt></p>
+</blockquote>
 
       
       <!-- reward -->
@@ -181,14 +193,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/11/14/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-11-14/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/12/15/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%E4%B9%8B%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%B8%80/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Listener%E7%9A%84%E5%A4%9C%E6%99%9A/" rel="tag">Listener的夜晚</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94/" rel="tag">生活随笔</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java%E5%90%8E%E7%AB%AF/" rel="tag">java后端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8C%91%E6%88%98Spring/" rel="tag">挑战Spring</a></li></ul>
 
 
     </footer>
@@ -199,19 +211,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/12/15/%E6%8C%91%E6%88%98Spring%E7%B3%BB%E5%88%97/Spring%E4%B9%8B%E5%BE%AA%E7%8E%AF%E4%BE%9D%E8%B5%96%E4%B8%80/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            【挑战 Spring】—– Spring之循环依赖一
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/09/01/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-09-01/" class="article-nav-link">
+      <a href="/2020/11/14/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2020-11-14/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">【Listener的夜晚】—–-不是所有的坚持都有结果</div>
+        <div class="article-nav-title">【Listener的夜晚】—–-白天也不一定会光亮</div>
       </a>
     
   </nav>
