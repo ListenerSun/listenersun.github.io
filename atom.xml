@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-04-14T18:02:48.571Z</updated>
+  <updated>2021-04-22T18:05:19.983Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>【挑战并发】—– 一文搞清线程的生命周期几个状态!!!</title>
+    <link href="http://yoursite.com/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/"/>
+    <id>http://yoursite.com/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</id>
+    <published>2021-04-22T18:05:34.000Z</published>
+    <updated>2021-04-22T18:05:19.983Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;如果一个知识点，学了10遍还不会！！那就学几十遍，几百遍……如果还学不会，那我不信！！！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="并发多线程" scheme="http://yoursite.com/categories/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+    
+      <category term="挑战并发" scheme="http://yoursite.com/tags/%E6%8C%91%E6%88%98%E5%B9%B6%E5%8F%91/"/>
+    
+      <category term="java后端" scheme="http://yoursite.com/tags/java%E5%90%8E%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
     <title>【挑战并发】—– 实现多线程到底几种方式？我说两种！！！</title>
     <link href="http://yoursite.com/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/"/>
     <id>http://yoursite.com/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/</id>
     <published>2021-04-14T17:16:34.000Z</published>
-    <updated>2021-04-14T18:02:48.571Z</updated>
+    <updated>2021-04-22T18:02:36.459Z</updated>
     
     <summary type="html">
     

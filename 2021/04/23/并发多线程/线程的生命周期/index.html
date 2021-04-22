@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    【挑战并发】—– 实现多线程到底几种方式？我说两种！！！ |  倾听者
+    【挑战并发】—– 一文搞清线程的生命周期几个状态!!! |  倾听者
   </title>
   <meta name="generator" content="hexo-theme-ayer">
   
@@ -44,7 +44,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-并发多线程/实现多线程方式" class="article article-type-post" itemscope
+  <article id="post-并发多线程/线程的生命周期" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -52,7 +52,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  【挑战并发】—– 实现多线程到底几种方式？我说两种！！！
+  【挑战并发】—– 一文搞清线程的生命周期几个状态!!!
 </h1>
  
 
@@ -61,8 +61,8 @@
 
     
     <div class="article-meta">
-      <a href="/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/" class="article-date">
-  <time datetime="2021-04-14T17:16:34.000Z" itemprop="datePublished">2021-04-15</time>
+      <a href="/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+  <time datetime="2021-04-22T18:05:34.000Z" itemprop="datePublished">2021-04-23</time>
 </a>
       
   <div class="article-category">
@@ -76,7 +76,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">777</span>
+            <span class="post-count">620</span>
         </span>
     </span>
 
@@ -85,7 +85,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">3 分钟</span>
+            <span class="post-count">2 分钟</span>
         </span>
     </span>
 </div>
@@ -110,39 +110,31 @@
       
 
       
-      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>如果极限真的存在？那么它在哪里？好了，不装逼~。</p>
-<p>JAVA并发相关知识体系，可谓是学了一遍又一遍，每次都嗯……这次再来一次系统学习。先来个开篇，实现多线程到底几种方式？这次我说是<strong>两种</strong>！！</p>
+      <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>如果一个知识点，学了10遍还不会！！那就学几十遍，几百遍……如果还学不会，那我不信！！！</p>
 <a id="more"></a>
-
-<h3 id="官网说两种"><a href="#官网说两种" class="headerlink" title="官网说两种"></a>官网说两种</h3><p>先来看下Oracle官网文档描述(<code>https://docs.oracle.com/javase/8/docs/api/index.html</code>)</p>
-<p><img src="/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/1.png" alt="1618332534296"></p>
-<p><strong>因为官网说实现多线程的方式就两种，那我也就说是两种</strong></p>
+<p>线程的生命周期，以及线程的几个状态和状态之间的转化基本上每个人都能说上来，但是每个状态之间的转换，以及调用哪些方法可以由什么样的状态转换到什么样的状态还是有些模糊的。这次盘它！！！</p>
+<h3 id="线程的几种状态"><a href="#线程的几种状态" class="headerlink" title="线程的几种状态"></a>线程的几种状态</h3><p>比较细致的划分，线程总共有6中状态分别是：</p>
 <ul>
-<li>方法一: 继承 Thread 类</li>
-<li>方法二: 实现 Runable 接口</li>
+<li>New</li>
+<li>Runnable</li>
+<li>Blocked</li>
+<li>Waiting （没有时间期限）</li>
+<li>Time Waiting (有时间期限)</li>
+<li>Terminated</li>
 </ul>
-<h3 id="民间还有好几种？"><a href="#民间还有好几种？" class="headerlink" title="民间还有好几种？"></a>民间还有好几种？</h3><p>那么问题来了？网上好多文章说可以通过 Callable、FutureTask、线程池也可以实现多线程，这种说法对不对呢？</p>
-<p>我只能说 <strong>说法不精确</strong>，那只能源码解读一波了，一个一个来，不急~</p>
-<h4 id="FutureTask、Callable"><a href="#FutureTask、Callable" class="headerlink" title="FutureTask、Callable"></a>FutureTask、Callable</h4><p>首先通过 FutureTask、Callable确实可以达到创建新的线程的效果。我们先看下FutureTask的类继承图</p>
-<p><img src="/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/2.png" alt></p>
-<p>从类的继承图上来看，FutureTask也是实现了 Runable 接口，并且在构造函数里可以传入 Callable 类型参数。所以从本质上来讲，使用FutureTask实现多线程的方式也是通过Runable接口来实现的。</p>
-<h4 id="线程池的方式"><a href="#线程池的方式" class="headerlink" title="线程池的方式"></a>线程池的方式</h4><p>看一下线程池的创建方法:       <code>ExecutorService executorService = Executors.newFixedThreadPool(1);</code> </p>
-<p>看一下newFixedThreadPool(1)方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                  <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                  <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>线程6钟状态的变化，看图说话，一图胜过千言万语</p>
+<p><img src="/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/%E7%BA%BF%E7%A8%8B%E5%90%84%E4%B8%AA%E7%8A%B6%E6%80%81.png" alt></p>
+<h3 id="代码调试"><a href="#代码调试" class="headerlink" title="代码调试"></a>代码调试</h3><h4 id="打印-NEW、RUNNABLE、TERMINATED状态"><a href="#打印-NEW、RUNNABLE、TERMINATED状态" class="headerlink" title="打印 NEW、RUNNABLE、TERMINATED状态"></a>打印 NEW、RUNNABLE、TERMINATED状态</h4><p><strong>代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: ListenerSun(男, 未婚) 微信:810548252</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Created in 2021-04-23 0:55</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLifeCycle</span> <span class="keyword">implements</span>  <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> ThreadLifeCycle());</span><br><span class="line">        <span class="comment">// 打印出NEW状态</span></span><br><span class="line">        System.out.println(thread.getState());</span><br><span class="line">        thread.start();</span><br><span class="line">        <span class="comment">// 打印出Runnable</span></span><br><span class="line">        System.out.println(thread.getState());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 打印出 TERMINATED 状态</span></span><br><span class="line">        System.out.println(thread.getState());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>通过层层调用，其实生产线程的类是 DefaultThreadFactory 这个类，本质还是 调用new Thread()创建的线程。所以线程池实现多线程本质还是 通过 Thread 类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultThreadFactory</span> <span class="keyword">implements</span> <span class="title">ThreadFactory</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> AtomicInteger poolNumber = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> ThreadGroup group;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger threadNumber = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> String namePrefix;</span><br><span class="line"></span><br><span class="line">        DefaultThreadFactory() &#123;</span><br><span class="line">            SecurityManager s = System.getSecurityManager();</span><br><span class="line">            group = (s != <span class="keyword">null</span>) ? s.getThreadGroup() :</span><br><span class="line">                                  Thread.currentThread().getThreadGroup();</span><br><span class="line">            namePrefix = <span class="string">"pool-"</span> +</span><br><span class="line">                          poolNumber.getAndIncrement() +</span><br><span class="line">                         <span class="string">"-thread-"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Thread <span class="title">newThread</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">            Thread t = <span class="keyword">new</span> Thread(group, r,</span><br><span class="line">                                  namePrefix + threadNumber.getAndIncrement(),</span><br><span class="line">                                  <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">if</span> (t.isDaemon())</span><br><span class="line">                t.setDaemon(<span class="keyword">false</span>);</span><br><span class="line">            <span class="keyword">if</span> (t.getPriority() != Thread.NORM_PRIORITY)</span><br><span class="line">                t.setPriority(Thread.NORM_PRIORITY);</span><br><span class="line">            <span class="keyword">return</span> t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>打印结果</strong></p>
+<p><img src="/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/%E6%89%93%E5%8D%B0%E5%89%8D%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81.png" alt="1619111199081"></p>
+<h4 id="打印-Time-Waiting、Waiting、BLOCKED状态"><a href="#打印-Time-Waiting、Waiting、BLOCKED状态" class="headerlink" title="打印 Time Waiting、Waiting、BLOCKED状态"></a>打印 Time Waiting、Waiting、BLOCKED状态</h4><p>因为多线程代码不好调试，可以根据代码中的注释自己开启多线程调试打印出线程的各个状态！！！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>:</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: ListenerSun(男, 未婚) 微信:810548252</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: Created in 2021-04-23 1:08</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLifeCycle1</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ThreadLifeCycle1 runable = <span class="keyword">new</span> ThreadLifeCycle1();</span><br><span class="line">        Thread thread1 = <span class="keyword">new</span> Thread(runable);</span><br><span class="line">        thread1.start();</span><br><span class="line">        Thread thread2 = <span class="keyword">new</span> Thread(runable);</span><br><span class="line">        thread2.start();</span><br><span class="line">        <span class="comment">// 因为thread1正在执行 Thread.sleep(10000),所以打印出TIMED_WAITING状态</span></span><br><span class="line">        System.out.println(thread1.getState());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1300</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 因为 thread1 正在执行wait()方法所以打印出了 Waiting状态</span></span><br><span class="line">        System.out.println(thread1.getState());</span><br><span class="line">        <span class="comment">// 因为thread2想拿到sync的锁，拿不到所以打印出BLOCKED状态</span></span><br><span class="line">        System.out.println(thread2.getState());</span><br><span class="line"><span class="comment">//        Thread.sleep();</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        sync();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">sync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">            wait();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="官网两种方法哪种方式比较好"><a href="#官网两种方法哪种方式比较好" class="headerlink" title="官网两种方法哪种方式比较好"></a><strong>官网两种方法哪种方式比较好</strong></h3><p>实现Runable的方式比较好一点</p>
-<ul>
-<li>实现Runable接口新建线程损耗小一点。因为继承Thread类每次都要new一个线程以及后面去销毁损耗较大，但是实现了Runable接口可以重复利用一个线程去执行任务，并且线程池也是这么做的支持传入Runable接口作为参数。</li>
-<li>JAVA不支持多继承，扩展性感觉差点</li>
-<li>Thread类中也维护了一个Runable的属性，run()方法也是调用的Runable的方法。只是我们继承Thread类之后重写了run()方法。所以本质上还是使用Runable接口。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>本质上实现多线程就只有两种方式，如果通过继承、包装来实现也算新的方式，那么JDK中那么多包装、继承Thread类、Runable接口的方式都能算实现多线程了。</li>
-<li>你知道的越多，你不知道的越多。</li>
-</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上就是线程的各个状态，以及调用哪些方法会触发线程的转换，总结的很全面了！！！</p>
+<p>一般而言Blocked、Waiting、Time Waiting这些状态都会被称为阻塞状态，不仅仅是Blocked</p>
+<p>你知道的越多，你不知道的越多</p>
 <center><h3>欢迎扫码关注</h3></center>
 
 <blockquote>
@@ -217,7 +209,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -235,19 +227,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2021/04/23/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            【挑战并发】—– 一文搞清线程的生命周期几个状态!!!
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/03/21/listener%E7%9A%84%E5%A4%9C%E6%99%9A/2021-03-21/" class="article-nav-link">
+      <a href="/2021/04/15/%E5%B9%B6%E5%8F%91%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%96%B9%E5%BC%8F/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">【Listener的夜晚】—–-你要学会自己陪伴自己！</div>
+        <div class="article-nav-title">【挑战并发】—– 实现多线程到底几种方式？我说两种！！！</div>
       </a>
     
   </nav>
